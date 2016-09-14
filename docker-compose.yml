@@ -1,0 +1,20 @@
+version: "2"
+services:
+  db:
+    image: mysql:5.7
+    container_name: django-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=demo-user
+      - MYSQL_DATABASE=demo-db
+    ports:
+      - "3306:3306"
+  web:
+    build: .
+    image: django-web
+    container_name: django-web
+    volumes:
+      - .:/usr/src/app
+    network_mode: "host"
+    depends_on:
+      - db
+    command: python manage.py runserver 0.0.0.0:80
